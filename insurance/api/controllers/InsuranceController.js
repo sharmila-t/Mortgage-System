@@ -19,29 +19,44 @@ module.exports = {
 
         await Insurance.createEach([{mort_id:mort_id, appraisal_value: appraisal_value, insured_value:insured_value, deductible_value:deductible_value, mlsid: mlsid, name: name}]);
 
-        //  return res.json(
-        //  {
-        //      name: name,
-        //      mort_id: mort_id,
-        //      mlsid: mlsid,
-        //      insured_value: insured_value,
-        //      deductible_value: deductible_value,
-             
-        //  });
-
         url="https://prod-04.canadacentral.logic.azure.com:443/workflows/4deb1889c4e94d59b3ca84e01cfca964/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=CczRwFDUyTlPk4ptdV_7WFCVHIvlHMzRuObumI-WbXE";
 
-        request.post(url, { json : { "mort_id" : mort_id ,"appraisal_value":appraisal_value, "insured_value": insured_value , "deductible_value": deductible_value, mlsid: mlsid,"name": name}}, function(error, response, body) {
-  
-            if (error) {
-              sails.log.error(error);
-              return res.json(500, { error: 'Unable to make post call' });
-            }
-            else {
-                return res.json({"status": 'success'});
-            }
+        request.post(url, { json : { "mort_id" : mort_id ,"appraisal_value":appraisal_value, "insured_value": insured_value , "deductible_value": deductible_value, mlsid: mlsid,"name": name}}, 
+        async function(err, response, body) {
+            var _startTime = new Date();
+            await Logger.create({
+              IP: -1,
+              requestUrl: response.request.href,
+              requestBody: JSON.stringify(response.request.body),
+              method: response.req.method,
+              requestHeaders: JSON.stringify(response.request.headers),
+              responseTime: new Date() - _startTime + ' ms',
+              responseCode: response.statusCode,
+              responseBody: JSON.stringify({
+                body
+              }),
+              appSource: 'Insurance Portal'
+            }).exec(function(err, result) {
+              if (err) {
+                console.log('Some error occured ' + err);
+              }
             });
-           
-        }
-    };      
+    
+            // if (response.statusCode != 200 || response.statusCode != 201) {
+    
+            //   return res.ok({
+            //     result: "Internal error while invoking internal call"
+            //   }, 500);
+            // }
+            
+            return res.ok({"status": 'success'});
+            
+          })
+
+    
+        } 
+
+        
+     }    
+
     
