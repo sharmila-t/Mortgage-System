@@ -1,0 +1,115 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        * {box-sizing: border-box}
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial;
+        }
+
+        .tablink {
+            background-color: #555;
+            color: white;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            font-size: 17px;
+            width: 25%;
+        }
+
+        .tablink:hover {
+            background-color: #777;
+        }
+
+        .tabcontent {
+            padding: 100px 20px;
+            height: 100%;
+        }
+        .modal-body{
+            text-align: center}
+
+        h1{text-align: center}
+        .card-header{background: beige}
+        .submit{margin-left: 45%; background: chocolate}
+        .card{width: 50rem; height: 25%; margin-left: 20%; margin-top: 10px; padding-bottom: 20px; background:lavender}
+
+    </style>
+    </head>
+<body>
+
+<button class="tablink" style="width: 100%; font-size:30px; font-weight: bold"id="defaultTab">Mortgage Form</button>
+<div id="Form" class="tabcontent">
+    <div class="container" style="padding-bottom: 100px;">
+        <div class="card" style="margin-left: 30%">
+            <h1 class="card-header">
+                Please fill the details</h1>
+            <div>
+                <form action="" id="myForm" method="post">
+                    <div class="form-group">
+                        <label for="name"><h4>Applicant Name</h4></label>
+                        <input type="text" class="form-control" required="true" onkeypress="return ValidationsName(this,event)"id="name" placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="mortValue"><h4>Mortgage Value</h4></label>
+                        <input type="text" class="form-control" required="true" onkeypress="return ValidationsNum(this,event)"id="mvalue" placeholder="Enter a mortgage value">
+                    </div>
+                    <div class="form-group">
+                        <label for="mlsID"><h4>MLS ID</h4></label>
+                        <input type="text" class="form-control" required  onkeypress="return ValidationsNum(this,event)" id="mlsid" placeholder="Enter your property ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="employerName"><h4>Employer name</h4></label>
+                        <input type="text" class="form-control" required id="empName" onkeypress="return ValidationsName(this,event)" placeholder="Enter your employer name">
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><h4>Password</h4></label>
+                        <input type="password" class="form-control"required  minlength="8" maxlength="10" id="password" onkeyup="passcheck()" placeholder="Choose a Password with a minimum of 8 characters">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password"><h4>Confirm Password</h4></label>
+                        <input type="password" class="form-control"minlength="8" maxlength="10" required="true" onkeyup="passcheck()" id="confirm_password"placeholder="Re-enter your Password">
+                        <span id='message'></span>
+                    </div>
+                    <button  id="submitBtn" class="submit" onclick="mbrform()"  data-toggle="modal" data-target="#myModal" style = "margin-top: 3.5%">Submit</button>
+                    </form>
+                <p>Already applied? <a href="/mbrlogin">Click here to know the status</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: fit-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Thanks for your mortgage request</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <p id="applicationNum">1111</p>
+                <P id="brokerAddress">www.www@www</P>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- 
+    <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+<style>
+    h1{text-align: center}
+        .card-header{background: beige}
+        .submit{margin-left: 45%; background: chocolate}
+        .card{width: 50rem; height: 25%; margin-left: 20%; margin-top: 10px; padding-bottom: 20px; background:lavender}
+        #statusmsg1{text-align: center}
+        #statusmsg2{text-align: center}
+        #statusmsg3{ text-align: center}
+        #statusmsg4{ text-align: center}
+        #statusmsg5{ text-align: center}
+
+
+
+
+        .tablink {
+            background-color: #555;
+            color: white;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            font-size: 17px;
+            width: 25%;
+        }
+
+        .tablink:hover {
+            background-color: #777;
+        }
+</style>
+<script>
+window.onload=  function() {
+    console.log("Hello");
+    let uname = sessionStorage.getItem('mortgageID'); 
+    console.log(uname);
+    // let pwd = document.getElementById("password").value;
+            
+            let url = "https://projectclustermbrback.azurewebsites.net/getstatus?id=" + uname;
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    console.log("got response");
+                    let result = JSON.parse(this.response);
+                    if(result.mortgageStatus == "ID not found"){
+                        alert("ID not Found");
+                    }
+                    else{
+                        document.getElementById("statusmsg1").innerHTML = "Name: " + result.name;
+                        document.getElementById("statusmsg2").innerHTML = "MLS ID: " + result.mlsid; 
+                        document.getElementById("statusmsg3").innerHTML = "Insurance value: " + result.insurance_value;
+                        document.getElementById("statusmsg4").innerHTML = "Deductible value: " + result.deduct_value; 
+                        document.getElementById("statusmsg5").innerHTML = "Status from employer: " + result.employeer_status;
+                        
+                    }
+                    console.log(result);
+                }
+            };
+            xhttp.open("GET", url, true);
+            xhttp.send();
+        }
+</script>
+<button class="tablink" style="width: 100%; font-size:30px; font-weight: bold"id="defaultTab">Status of mortgage</button>
+<div id="Status" class="tabcontent">
+    <div class="container" style="margin-left: 18%;
+    padding-top: 70px;">
+     
+        
+            <div class="card" >
+            <h1 class="card-header">
+                Personal Information </h1>
+            <div>
+                <p id="statusmsg1" style="font-weight: bold">To be Updated</p>
+                <p id="statusmsg2" style="font-weight: bold">To be Updated</p>
+
+            </div>
+        </div>
+        <div class="card" >
+            <h1 class="card-header">
+              Insurance Status</h1>
+            <div>
+                <p id="statusmsg3" style="font-weight: bold">To be Updated</p>
+                <p id="statusmsg4" style="font-weight: bold">To be Updated</p>
+
+            </div>
+        </div>
+        <div class="card" >
+            <h1 class="card-header">
+               Employer status </h1>
+            <div>
+                <p id="statusmsg5" style="font-weight: bold">To be Updated</p>
+            </div>
+        </div>
+    </div>
+</div>
