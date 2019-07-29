@@ -20,6 +20,10 @@ module.exports = {
       type: 'string',
       required: true
     },
+     responseBody: {
+      type: 'string',
+      required: true
+    },
     method: {
       type: 'string',
       required: true

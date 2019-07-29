@@ -40,10 +40,12 @@ login : async function(req,res){
 },
 
 recieveFromEmployer : async function(req,res) {
+  
   var empid = req.body.employeeID;
   var mortId = req.body.mortId;
   var url = req.body.url;
   var employee;
+  console.log(empid,mortId);
   if( empid != ""){
     employee = await Employer.findOne({employeeID:empid}) 
   }
@@ -56,19 +58,40 @@ recieveFromEmployer : async function(req,res) {
   {  
 //url="https://prod-29.canadacentral.logic.azure.com:443/workflows/17dc5a6fb1fc44f294e45298b92d38c4/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ZTKHLHeZ2Jj-eWAbey1FGbgQuiDGoKbmOiQh6bZgBCY";
 request.post(url, { json : { "mort_id" : mortId ,"name":employee.name, "salary": employee.salary , "employment_len": employee.length}
-}, function(error, response, body) {
-  
-if (error) {
-  sails.log.error(error);
-  return res.json(500, { error: 'Unable to make post call' });
-}
-else {
-console.log("success");
-}
-});
+}, async function(err, response, body) {
+  //console.log(response,err,body);
+        var _startTime = new Date();
+        await Logger.create({
+          IP: -1,
+          requestUrl: response.request.href,
+          requestBody: JSON.stringify(response.request.body),
+          method: response.req.method,
+          requestHeaders: JSON.stringify(response.request.headers),
+          responseTime: new Date() - _startTime + ' ms',
+          responseCode: response.statusCode,
+          responseBody: JSON.stringify({
+            body
+          }),
+          appSource: 'RE Portal'
+        }).exec(function(err, result) {
+          if (err) {
+            console.log('Some error occured ' + err);
+          }
+        });
 
-return res.send("ok");
-}
+        // if (response.statusCode != 200 || response.statusCode != 201) {
+
+        //   return res.ok({
+        //     result: "Internal error while invoking internal call"
+        //   }, 500);
+        // }
+
+        res.ok({
+          result: 'Application updated succesfully'
+        });
+      });
+
+  }
 else 
 {
   return res.json(500, { error: 'Enter valid employee id' });

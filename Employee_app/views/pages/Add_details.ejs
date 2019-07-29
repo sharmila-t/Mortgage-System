@@ -63,17 +63,17 @@
      
       // Response
       posting.done(function(data) {
-        console.log(data);
-        if(data == "ok"){
+        console.log(data.status);
+        // if(data == "ok"){
 
           $("#content").html("Application Submitted Succesfully!!");
           jQuery("#popup").modal('show');
             
-        }
+       // }
 
-        else{
-          alert(res.error)
-        }
+        // else{
+        //   alert(res.error)
+        // }
 
       
       });
