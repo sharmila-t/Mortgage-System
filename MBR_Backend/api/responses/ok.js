@@ -4,7 +4,8 @@ module.exports = async function ok(data, statusCode) {
     var res = this.res;
     var sails = req._sails;
   
-    console.log(data);
+    console.log("data",data);
+    data =  JSON.stringify(data);
     if (!statusCode) {
       statusCode = "200";
     }
@@ -17,7 +18,7 @@ module.exports = async function ok(data, statusCode) {
       requestHeaders: JSON.stringify(req.headers),
       responseTime: new Date() - req._startTime + ' ms',
       responseCode: statusCode,
-      responseBody: JSON.stringify(data),
+      responseBody: data,
       appSource: 'MBR Portal'
     }).exec(function(err, result) {
       if (err) {
